@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
 
 <meta charset="utf-8">
-<title>Geoportal de Activos</title>
+<title>Visor Activos UEFSFA</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
 <style>
 
 body{
 margin:0;
+padding:0;
 }
 
 #map{
-width:100%;
 height:100vh;
+width:100%;
 }
 
 </style>
@@ -28,98 +27,73 @@ height:100vh;
 
 <div id="map"></div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
 
-// =========================
-// CREAR MAPA
-// =========================
+/* ===============================
+CREAR MAPA
+=============================== */
 
 var map = L.map('map').setView([-9.19,-75.015],6);
 
 
-// =========================
-// MAPAS BASE
-// =========================
 
-// Satélite (Esri)
+/* ===============================
+MAPA BASE SATELITAL
+=============================== */
 
 var satellite = L.tileLayer(
-'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
-maxZoom:19,
-attribution:'Tiles © Esri'
-}).addTo(map);
+'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+{
+maxZoom:20,
+subdomains:['mt0','mt1','mt2','mt3']
+}
+).addTo(map);
 
 
-// OpenStreetMap (opcional)
 
-var osm = L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:19,
-attribution:'© OpenStreetMap'
-});
-
-
-// =========================
-// CAPAS GEOSERVER
-// =========================
+/* ===============================
+CAPA WMS ACTIVOS
+=============================== */
 
 var activos = L.tileLayer.wms(
-"http://localhost:8081/geoserver/wms",{
-layers:'activos:activos_puntos',
-format:'image/png',
-transparent:true
-});
-
-var departamentos = L.tileLayer.wms(
-"http://localhost:8081/geoserver/wms",{
-layers:'peru:DEPARTAMENTOS',
-format:'image/png',
-transparent:true
-});
-
-var provincias = L.tileLayer.wms(
-"http://localhost:8081/geoserver/wms",{
-layers:'peru:PROVINCIAS',
-format:'image/png',
-transparent:true
-});
-
-var distritos = L.tileLayer.wms(
-"http://localhost:8081/geoserver/wms",{
-layers:'peru:DISTRITOS',
-format:'image/png',
-transparent:true
-});
+"https://gymnogenous-unarticulatory-kristen.ngrok-free.dev/geoserver/wms",
+{
+layers: "activos:activos_puntos",
+format: "image/png",
+transparent: true,
+version: "1.1.1"
+}
+).addTo(map);
 
 
-// =========================
-// CONTROL DE CAPAS
-// =========================
+
+/* ===============================
+CONTROL DE CAPAS
+=============================== */
 
 var baseMaps = {
 
-"Satélite": satellite,
-"OpenStreetMap": osm
+"Google Satellite": satellite
 
 };
 
 var overlayMaps = {
 
-"Activos": activos,
-"Departamentos": departamentos,
-"Provincias": provincias,
-"Distritos": distritos
+"Activos": activos
 
 };
 
-L.control.layers(baseMaps, overlayMaps).addTo(map);
+L.control.layers(baseMaps,overlayMaps).addTo(map);
 
 
-// activar capa inicial
 
-activos.addTo(map);
+/* ===============================
+ESCALA DEL MAPA
+=============================== */
+
+L.control.scale().addTo(map);
 
 </script>
 
