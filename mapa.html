@@ -21,15 +21,13 @@ body{margin:0}
 
 <script>
 
-/* MAPA */
-
 var map = L.map('map',{
 center:[-9.19,-75.015],
 zoom:6
 });
 
 
-/* BASE SATELITAL */
+/* MAPA BASE SATELITAL */
 
 var satelite = L.tileLayer(
 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
@@ -46,22 +44,22 @@ subdomains:['mt0','mt1','mt2','mt3']
 var activos = L.tileLayer.wms(
 "https://gymnogenous-unarticulatory-kristen.ngrok-free.dev/geoserver/activos/wms",
 {
-layers:"activos_puntos",
+layers:"activos:activos_puntos",
 format:"image/png",
 transparent:true,
-version:"1.1.1",
-attribution:"GeoServer"
+version:"1.1.1"
 }
 ).addTo(map);
 
 
 
-/* CONTROL */
+/* CONTROL DE CAPAS */
 
 L.control.layers(
 {"Satelite":satelite},
 {"Activos":activos}
 ).addTo(map);
+
 
 </script>
 
