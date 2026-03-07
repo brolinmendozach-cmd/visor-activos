@@ -27,7 +27,7 @@ zoom:6
 });
 
 
-/* MAPA BASE SATELITAL */
+/* BASE SATELITAL */
 
 var satelite = L.tileLayer(
 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
@@ -47,19 +47,19 @@ var activos = L.tileLayer.wms(
 layers:"activos:activos_puntos",
 format:"image/png",
 transparent:true,
-version:"1.1.1"
+version:"1.1.1",
+crs: L.CRS.EPSG4326
 }
 ).addTo(map);
 
 
 
-/* CONTROL DE CAPAS */
+/* CONTROL */
 
 L.control.layers(
 {"Satelite":satelite},
 {"Activos":activos}
 ).addTo(map);
-
 
 </script>
 
