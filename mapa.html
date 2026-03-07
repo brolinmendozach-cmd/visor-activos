@@ -2,13 +2,14 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Visor Activos</title>
+<title>Test WMS</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
-body{margin:0}
-#map{height:100vh;width:100%}
+#map{
+height:100vh;
+}
 </style>
 
 </head>
@@ -21,49 +22,24 @@ body{margin:0}
 
 <script>
 
-/* CREAR MAPA */
+var map = L.map('map').setView([-9,-75],6);
 
-var map = L.map('map',{
-center:[-9,-75],
-zoom:6
-});
+/* MAPA BASE OSM */
 
-
-/* MAPA BASE SATELITE */
-
-var googleSat = L.tileLayer(
-'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-{
-maxZoom:20,
-subdomains:['mt0','mt1','mt2','mt3']
-}
-).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
+}).addTo(map);
 
 
-
-/* WMS GEOSERVER */
+/* WMS */
 
 var activos = L.tileLayer.wms(
 "https://gymnogenous-unarticulatory-kristen.ngrok-free.dev/geoserver/wms",
 {
-layers:'activos:activos_puntos',
-format:'image/png',
+layers:"activos:activos_puntos",
+format:"image/png",
 transparent:true,
-version:'1.1.1',
-attribution:"GeoServer"
-}
-).addTo(map);
-
-
-
-/* CONTROL DE CAPAS */
-
-L.control.layers(
-{
-"Google Satellite":googleSat
-},
-{
-"Activos":activos
+version:"1.1.1"
 }
 ).addTo(map);
 
