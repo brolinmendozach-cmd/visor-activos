@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Visor Activos</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 body{margin:0}
@@ -17,21 +17,21 @@ body{margin:0}
 
 <div id="map"></div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 
-/* MAPA */
+/* CREAR MAPA */
 
 var map = L.map('map',{
-center:[-9.19,-75.015],
+center:[-9,-75],
 zoom:6
 });
 
 
 /* MAPA BASE SATELITE */
 
-var satelite = L.tileLayer(
+var googleSat = L.tileLayer(
 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
 {
 maxZoom:20,
@@ -41,16 +41,16 @@ subdomains:['mt0','mt1','mt2','mt3']
 
 
 
-/* WMS ACTIVOS */
+/* WMS GEOSERVER */
 
 var activos = L.tileLayer.wms(
 "https://gymnogenous-unarticulatory-kristen.ngrok-free.dev/geoserver/wms",
 {
-layers:"activos:activos_puntos",
-format:"image/png",
+layers:'activos:activos_puntos',
+format:'image/png',
 transparent:true,
-version:"1.1.1",
-srs:"EPSG:4326"
+version:'1.1.1',
+attribution:"GeoServer"
 }
 ).addTo(map);
 
@@ -59,8 +59,12 @@ srs:"EPSG:4326"
 /* CONTROL DE CAPAS */
 
 L.control.layers(
-{"Satelite":satelite},
-{"Activos":activos}
+{
+"Google Satellite":googleSat
+},
+{
+"Activos":activos
+}
 ).addTo(map);
 
 </script>
